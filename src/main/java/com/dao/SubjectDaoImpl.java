@@ -10,13 +10,14 @@ public class SubjectDaoImpl implements SubjectDao {
 
 	
 	public boolean addSubject(Subject s) {
-		Connection con = DBConnection.getConnection();
 		 boolean status=false;
 		 int x=0;
-        try {
+		 String query = "INSERT INTO subjects(sub_name, sub_code, sub_abbr, subject_type, sem, dept_id,faculty_id) VALUES(?,?,?,?,?,?,?)";
+         
+        try(		Connection con = DBConnection.getConnection();
+               PreparedStatement ps = con.prepareStatement(query);
+            ) {
         	
-            String query = "INSERT INTO subjects(sub_name, sub_code, sub_abbr, subject_type, sem, dept_id,faculty_id) VALUES(?,?,?,?,?,?,?)";
-            PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, s.getSub_name());
             ps.setString(2, s.getSub_code());
             
@@ -42,12 +43,13 @@ public class SubjectDaoImpl implements SubjectDao {
 
     public List<Subject> getAllSubjects() {
         List<Subject> list = new ArrayList<>();
-        Connection con = DBConnection.getConnection();
-        try {
-            String query = "SELECT * from subjects";
-            PreparedStatement ps = con.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
+        String query = "SELECT * from subjects";
+
+        try(        Connection con = DBConnection.getConnection();
+        		  PreparedStatement ps = con.prepareStatement(query);
+                ResultSet rs = ps.executeQuery();
+               ) {
+           while (rs.next()) {
                 Subject s = new Subject();
                 s.setSub_id(rs.getInt(1));
                 s.setSub_name(rs.getString(2));
@@ -67,11 +69,11 @@ public class SubjectDaoImpl implements SubjectDao {
 
     public Subject getSubjectById(int id) {
         Subject s = null;
-        Connection con = DBConnection.getConnection();
-        try {
-            String query = "SELECT * FROM subjects WHERE sub_id=?";
-            PreparedStatement ps = con.prepareStatement(query);
-            ps.setInt(1, id);
+        String query = "SELECT * FROM subjects WHERE sub_id=?";
+        try (        Connection con = DBConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement(query);
+                ){
+           ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 s = new Subject();
@@ -90,10 +92,11 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     public boolean updateSubject(Subject s) {
-    	Connection con = DBConnection.getConnection();
-        try {
-            String query = "UPDATE subjects SET sub_name=?, sub_code=?, sub_abbr=?, subject_type=?, sem=?, dept_id=?,faculty_id=? WHERE sub_id=?";
-            PreparedStatement ps = con.prepareStatement(query);
+        String query = "UPDATE subjects SET sub_name=?, sub_code=?, sub_abbr=?, subject_type=?, sem=?, dept_id=?,faculty_id=? WHERE sub_id=?";
+
+        try(    	Connection con = DBConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement(query);
+) {
 
             ps.setString(1, s.getSub_name());
             ps.setString(2, s.getSub_code());
@@ -111,10 +114,11 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     public boolean deleteSubject(int id) {
-    	Connection con = DBConnection.getConnection();
-        try {
-            String query = "DELETE FROM subjects WHERE sub_id=?";
-            PreparedStatement ps = con.prepareStatement(query);
+        String query = "DELETE FROM subjects WHERE sub_id=?";
+
+        try(    	Connection con = DBConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement(query);
+) {
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
