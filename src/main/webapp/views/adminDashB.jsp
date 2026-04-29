@@ -3,6 +3,40 @@
     pageEncoding="UTF-8"%>
 
 <%@page import="java.sql.*" %>
+<%@ page import="java.sql.* , com.util.*" %>
+
+<%
+    int teacherCount = 0;
+    int subjectCount = 0;
+    int slotCount = 0;
+    int deptCount = 0;
+
+    try {
+       
+        Connection con = DBConnection.getConnection();
+
+        Statement st = con.createStatement();
+
+        ResultSet rs;
+
+        rs = st.executeQuery("SELECT COUNT(*) FROM login_teacher");
+        if (rs.next()) teacherCount = rs.getInt(1);
+
+        rs = st.executeQuery("SELECT COUNT(*) FROM subjects");
+        if (rs.next()) subjectCount = rs.getInt(1);
+
+        rs = st.executeQuery("SELECT COUNT(*) FROM time_table");
+        if (rs.next()) slotCount = rs.getInt(1);
+
+        rs = st.executeQuery("SELECT COUNT(*) FROM departments");
+        if (rs.next()) deptCount = rs.getInt(1);
+
+        con.close();
+
+    } catch (Exception e) {
+        out.println(e);
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -575,21 +609,92 @@
                     </div>
                   </div>
                   -->
-                  
-                  <div class="card-body">
-               <div class="container-fluid mt-4">
+<div class="row">
 
-           
-            <div class="card mt-3 p-0">
-   <div class="banner-bg" role="img" aria-label="Dashboard Banner">
-            <br><br><br>
-           <center> <h2></h2></center>
+  <div class="col-md-3">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <div style="font-size:30px;">👨‍🏫</div>
+        <h3><%= teacherCount %></h3>
+        <p>Teachers</p>
+      </div>
+    </div>
   </div>
-                
-             </div>
 
-                  </div>
-                </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <div style="font-size:30px;">📚</div>
+        <h3><%= subjectCount %></h3>
+        <p>Subjects</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <div style="font-size:30px;">📅</div>
+        <h3><%= slotCount %></h3>
+        <p>TT Slots</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <div style="font-size:30px;">🏛️</div>
+        <h3><%= deptCount %></h3>
+        <p>Departments</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<br>
+
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between">
+        <h4>Faculty Members</h4>
+        <a href="#">View All →</a>
+      </div>
+      <div class="card-body">
+        Teacher list will appear here
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between">
+        <h4>This Week — Timetable</h4>
+        <a href="#">Full View →</a>
+      </div>
+      <div class="card-body">
+        Timetable preview here
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<br>
+<div class="card border-warning">
+  <div class="card-body d-flex justify-content-between align-items-center">
+    <div>
+      <h5>⏳ Pending Teacher Approvals</h5>
+      <small>Review new registrations</small>
+    </div>
+    <button class="btn btn-primary">Review Now →</button>
+  </div>
+</div>
+
+    </div>
               </div>
             </div>
           
