@@ -140,19 +140,20 @@
 
  <div class="options">
   
-<a href="#">Forgot?</a> 
-
+<!-- <a href="#">Forgot?</a> 
+ -->
     </div>
     
-    <button class="btn" formaction="${pageContext.request.contextPath}/facultyLogin">Login</button>
+ <%--    <button class="btn" formaction="${pageContext.request.contextPath}/facultyLogin">Login</button>
 <br>
 <p>before login, Check your account has been APPROVED or NOT !!
-<button class="btn" formaction="${pageContext.request.contextPath}/show_msgServlet"
-    title="Check, your account has been APPROVED or REGECTED by admin!!">Check Account</button>
+ --%>
+ <button class="btn" formaction="${pageContext.request.contextPath}/show_msgServlet"
+    title="login">Login</button>
     
 
 </form>
-<h3 style="color:green;">
+<%-- <h3 style="color:green;">
             ${error1}
            </h3>
            <h3 style="color:red;">
@@ -171,7 +172,7 @@
 <script>alert("<%=msg%>");</script>
 <%
     }
-%>
+%> --%>
    
     <div class="links">
         
